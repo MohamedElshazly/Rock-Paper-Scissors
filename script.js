@@ -1,3 +1,6 @@
+//Add event listenr on buttons
+const buttons = document.querySelector('.choices');
+
 const computerPlay = () => {
     //function that has computer logic
     const choices = {
@@ -8,17 +11,6 @@ const computerPlay = () => {
     const randomChoice = Math.floor(Math.random()* 3);
     return choices[randomChoice]; 
 }
-
-const playerPlay = () => {
-    let choice = prompt("what are you gonna throw? (rock, paper, scissors)").toLowerCase(); 
-    while(choice !== 'rock' && choice !== 'paper' && choice !== 'scissors'){
-        choice = prompt("Enter a correct choice please (rock, paper, scissors)").toLowerCase();
-    }
-    return choice;
-}
-
-
-
 
 
 const whoWon = (playerChoice, computerChoice) => {
@@ -70,26 +62,40 @@ const whoWon = (playerChoice, computerChoice) => {
 const game = (targetScore) => {
     let computerScore = 0; 
     let playerScore = 0;
-    while(computerScore !== targetScore && playerScore !== targetScore) {
-        console.log(`player score: ${playerScore}....Computer score: ${computerScore}`);
-        let computerChoice = computerPlay();
-        let playerChoice = playerPlay();
-        let score = whoWon(playerChoice, computerChoice);
-        if(score === 0) {
-            playerScore += 1;
+    let score = 0;
+    
+    //listen for player clicks and compare it to pc
+    buttons.addEventListener('click', (e) => {
+        //check if the element clicked is a button, 
+        //check its class and set its value to playerChoice variable. 
+        if (e.target.nodeName === 'BUTTON') {
+            let playerChoice = e.target.className;
+            //get round score 
+            score = whoWon(playerChoice, computerPlay());
+            if (computerScore === targetScore || playerScore === targetScore) {
+                (playerScore > computerScore) ? console.log("Congratulations! You Won!") 
+                : console.log("Unlucky.. You Lost!")  
+            }
+            else {
+                if(score === 0) {
+                    playerScore += 1;
+                    console.log(`player score: ${playerScore}....Computer score: ${computerScore}`);
+                }
+                else if(score === 1) {
+                    computerScore += 1;
+                    console.log(`player score: ${playerScore}....Computer score: ${computerScore}`); 
+                }
+                else {
+                    console.log('here')
+                }
+            } 
+            
+            // playedFlag = 1;     
         }
-        else if(score === 1) {
-            computerScore += 1; 
-        }
-        else {
-            continue;
-        }
-    }
-    console.log(`player score: ${playerScore}....Computer score: ${computerScore}`);
-    (playerScore > computerScore) ? console.log("Congratulations! You Won!") : console.log("Unlucky.. You Lost!")
-    (
+    })
+    // check who won and update vairables
         
-    )
- 
-}
+    }
+   
+       
 game(5);
